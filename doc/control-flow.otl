@@ -1,0 +1,21 @@
+setup GPIO
+log everything
+separate scripts
+	logs (tail logs)
+	force start/stop
+	take photo
+	read mag sensor(s)
+	read light sensor(s)
+start function
+	allow start if 0 or 1 mag sensors are triggered
+main loop
+	if moving
+		stop if override(?) - (no, just kill door script)
+		stop if timed out
+		stop when next mag sensor triggers
+			if door was just closed, take a photo
+	if !moving
+		start if override or if light-triggered
+		check light level every minute - start if past threshold
+catch keyboard interrupt or override to stop
+teardown GPIO

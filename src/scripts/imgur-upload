@@ -1,0 +1,15 @@
+#!/usr/bin/python -ttu
+# -*- coding: utf-8 -*-
+
+import chxlib
+
+def get_args():
+    import argparse
+    parser = argparse.ArgumentParser(description='Upload image to imgur and write log message.')
+    parser.add_argument('file', type=argparse.FileType('r'))
+    return parser.parse_args()
+
+if __name__ == '__main__':
+    args = get_args()
+    args.file.close() # because argparse opens it
+    chxlib.postPhoto(args.file.name)

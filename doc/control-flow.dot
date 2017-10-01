@@ -1,0 +1,22 @@
+digraph G {
+  rankdir=LR
+
+  closing [shape=diamond]
+  closed [shape=box,style=filled]
+  opening [shape=diamond]
+  open [shape=box,style=filled]
+
+  closed -> dawn
+  dawn -> opening [label="lock"]
+  closed -> "force\lopen"
+  "force\lopen" -> opening [label="lock"]
+  opening -> "top\lmagnet" -> open
+  opening -> "opening\ltimeout" -> open
+
+  open -> dusk
+  dusk -> closing [label="lock"]
+  open -> "force\lclose"
+  "force\lclose" -> closing [label="lock"]
+  closing -> "bottom\lmagnet" -> closed
+  closing -> "closing\ltimeout" -> closed
+}

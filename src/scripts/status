@@ -1,0 +1,10 @@
+#!/usr/bin/python -ttu
+# -*- coding: utf-8 -*-
+
+import os
+import chxlib
+
+lightLevel = chxlib.getLightLevel()
+doorState = chxlib.getDoorState()
+
+chxlib.log('📊 light level {}, door is {}.'.format(lightLevel, doorState), level='DEBUG')

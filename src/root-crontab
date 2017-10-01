@@ -1,0 +1,7 @@
+# Commands to start and stop the "motion" motion capture daemon were moved to
+# chxlib.py, and are triggered before & after door close & open photos are
+# taken. Check out autodoor and chxlib.py.
+#0 8 * * * systemctl start motion
+#0 20 * * * systemctl stop motion
+
+# vim: ft=crontab

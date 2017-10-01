@@ -1,0 +1,141 @@
+#!/bin/bash
+
+set -o errexit
+set -o nounset
+set -o pipefail
+
+TOP=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+
+function loud() {
+  echo "---------------------------------"
+  echo "|→ $1"
+  echo "---------------------------------"
+}
+
+if ! [[ -L secrets ]]
+then
+  echo 'Please symlink the "secrets" dir in joint/raspberry_pi here.'
+  echo 'For example: ln -s ~/sync/joint/raspberry_pi/secrets'
+  exit 1
+fi
+
+loud "stage directory structure to be copied to pi@raspberrypi's \$HOME"
+
+rm -rf build
+mkdir -v build
+mkdir -v build/bin
+mkdir -v build/log
+mkdir -v build/log/youtube
+mkdir -v build/Chicken
+mkdir -v build/Chicken/config
+mkdir -v build/Chicken/lib
+mkdir -v build/Chicken/src
+mkdir -v build/Chicken/src/photoresistor
+
+loud "stage scripts and source to compile native programs"
+
+#######################################################################
+# Shared libraries and configuration files
+#######################################################################
+cp -v "$TOP/secrets/chicken-secrets.json" build/Chicken/config
+cp -v "$TOP/src/lib/chxmotor.py" build/Chicken/lib
+cp -v "$TOP/src/lib/chxlib.py" build/Chicken/lib
+cp -v "$TOP/src/pi-crontab" build/Chicken/config
+cp -v "$TOP/src/root-crontab" build/Chicken/config
+cp -v "$TOP/src/motion.conf" build/Chicken/config
+
+#######################################################################
+# Read light level via the photoresistor. Final program name when deployed
+# on raspberry pi is "lightLevel" (see below).
+# Run without args. Returns a negative or positive whole number. Crossing
+# zero in either direction seems to indicate the dawn/dusk transition
+# close enough to what the chickens expect.
+#######################################################################
+cp -v "$TOP/src/photoresistor/photoresistor.c" build/Chicken/src/photoresistor
+cp -v "$TOP/src/photoresistor/Makefile" build/Chicken/src/photoresistor
+
+#######################################################################
+# Check light level and decide whether or not to actuate door.
+# No args. Intended to be run with cron only... see src/crontab.
+#######################################################################
+cp -v "$TOP/src/scripts/autodoor" build/Chicken/lib
+pushd build/bin > /dev/null
+ln -s ../Chicken/lib/autodoor
+popd > /dev/null
+
+#######################################################################
+# Check mag sensors and open or close door if safe to do so.
+# Run without args for usage.
+#######################################################################
+cp -v "$TOP/src/scripts/door" build/Chicken/lib
+pushd build/bin > /dev/null
+ln -s ../Chicken/lib/door
+popd > /dev/null
+
+#######################################################################
+# Report light level and door status (open/closed/unknown).
+# No args.
+#######################################################################
+cp -v "$TOP/src/scripts/status" build/Chicken/lib
+pushd build/bin > /dev/null
+ln -s ../Chicken/lib/status
+popd > /dev/null
+
+#######################################################################
+# Take a photo and publish to Imgur and Slack.
+# No args.
+#######################################################################
+cp -v "$TOP/src/scripts/photo" build/Chicken/lib
+pushd build/bin > /dev/null
+ln -s ../Chicken/lib/photo
+popd > /dev/null
+
+#######################################################################
+# Upload a photo to Imgur and log to Slack.
+# One argument: full path of image file to upload.
+#######################################################################
+cp -v "$TOP/src/scripts/imgur-upload" build/Chicken/lib
+pushd build/bin > /dev/null
+ln -s ../Chicken/lib/imgur-upload
+popd > /dev/null
+
+#######################################################################
+# Look for uploaded YouTube videos and post to Slack if thumbnails are ready.
+# No args.
+#######################################################################
+cp -v "$TOP/src/scripts/youtube-flush" build/Chicken/lib
+pushd build/bin > /dev/null
+ln -s ../Chicken/lib/youtube-flush
+popd > /dev/null
+
+#######################################################################
+# Upload a video to YouTube.
+# One argument: full path of video file to upload.
+#######################################################################
+cp -v "$TOP/secrets/client_secrets.json" build/Chicken/lib
+cp -v "$TOP/secrets/youtube-upload.py-oauth2.json" build/Chicken/lib
+cp -v "$TOP/src/lib/youtube-upload.py" build/Chicken/lib
+cp -v "$TOP/src/scripts/youtube-upload" build/bin
+
+loud "deploy to raspberrypi"
+
+ssh pi@raspberrypi 'rm -rf ~/Chicken'
+rsync -av build/ pi@raspberrypi:
+
+# allow motion to read secrets & write logs so it can run youtube-upload
+ssh pi@raspberrypi 'chown -R pi:video ~/Chicken ~/log ~/bin'
+ssh pi@raspberrypi 'chmod +s ~/log/youtube'
+
+loud "compile native programs on raspberrypi"
+
+ssh pi@raspberrypi 'cd ~/Chicken/src/photoresistor/ && make && cp -v ~/Chicken/src/photoresistor/photoresistor ~/bin/lightLevel'
+
+loud "deploy config changes"
+
+echo Update pi crontab
+ssh pi@raspberrypi 'crontab Chicken/config/pi-crontab'
+echo Update root crontab
+ssh pi@raspberrypi 'sudo crontab Chicken/config/root-crontab'
+motionConf=/etc/motion/motion.conf
+echo Update $motionConf
+ssh pi@raspberrypi "sudo cp Chicken/config/motion.conf $motionConf"

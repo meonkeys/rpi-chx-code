@@ -1,0 +1,38 @@
+#!/usr/bin/python -ttu
+# -*- coding: utf-8 -*-
+
+# Chicken automatic door controller.
+# - automatically actuates chicken door based on light level
+# - takes photo, sends to Imgur album https://imgur.com/a/7eKFl
+# - sends notifications to Slack channel https://chxhq.slack.com/messages/C6DL0SR16/
+#
+# Prerequisites
+# - Python 2.7
+# - sudo pip install imgurpython
+
+import datetime
+import json
+import os
+
+import chxlib
+
+lightLevel = chxlib.getLightLevel()
+doorState = chxlib.getDoorState()
+
+chxlib.log('📊 Light level {}, door is {}.'.format(lightLevel, doorState), level='DEBUG')
+
+dooracle = chxlib.doorOracle(lightLevel=lightLevel, doorState=doorState)
+
+if dooracle['recommend'] != 'none':
+    chxlib.log(dooracle['message'], level=dooracle['severity'])
+    chxlib.door(dooracle['recommend'], doorState=doorState)
+    # Take a photo and start or stop motion. We can't take a photo while motion
+    # is running.
+    if dooracle['recommend'] == 'open':
+        chxlib.postPhoto(chxlib.takePhoto())
+        chxlib.systemctl(unit='motion', action='start')
+        chxlib.log('☄ Initiated motion detection', level='DEBUG')
+    elif dooracle['recommend'] == 'close':
+        chxlib.systemctl(unit='motion', action='stop')
+        chxlib.log('☄ Terminated motion detection', level='DEBUG')
+        chxlib.postPhoto(chxlib.takePhoto())

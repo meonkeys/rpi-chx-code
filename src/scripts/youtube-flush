@@ -1,0 +1,43 @@
+#!/usr/bin/python -ttu
+# -*- coding: utf-8 -*-
+
+# Check if uploaded YouTube videos have thumbnails yet and if so, post them to Slack
+
+import os
+import requests
+import time
+
+import chxlib
+
+for path, dirs, files in os.walk(chxlib.youtubeIdsDir):
+    youtubeIds = files
+
+one_minute = 60 # seconds
+ten_minutes = one_minute * 10
+
+for youtubeId in youtubeIds:
+    filename = os.path.join(chxlib.youtubeIdsDir, youtubeId)
+    s = os.stat(filename)
+    if time.time() - s.st_mtime > ten_minutes:
+        # Abort stale & likely failed YouTube uploads.
+        #
+        # Some uploads get stuck in "95% complete" or something. Ignore them.
+        # They'll be more chicken activity later.
+        #
+        # Maybe this happens with invalid video files.
+        chxlib.log('🧀 youtubeId {} is very stale and likely failed. Aborting.'.format(youtubeId), level='DEBUG')
+        os.unlink(filename)
+        continue
+    thumbnailUrl = 'https://img.youtube.com/vi/{}/0.jpg'.format(youtubeId)
+    r = requests.head(thumbnailUrl)
+    if r.status_code == 200:
+        # post YouTube video link to Slack - Slack should unfurl since thumbnail now exists
+        videoUrl = 'https://www.youtube.com/watch?v={}'.format(youtubeId)
+        chxlib.log('📺 Coop activity: {}'.format(videoUrl), level='DEBUG')
+        # delete youtubeId file
+        os.unlink(filename)
+    elif r.status_code == 404:
+        chxlib.log('👀 No thumbnail yet for youtubeId {}'.format(youtubeId), level='DEBUG')
+    else:
+        message = '🙈 Unexpected HTTP response code {} for HEAD {}'.format(r.status_code, thumbnailUrl)
+        chxlib.log(message, level='DEBUG')

@@ -1,0 +1,18 @@
+#!/bin/bash
+
+# Wrap Python YouTube upload script from
+# https://github.com/youtube/api-samples/blob/master/python/upload_video.py .
+# Created because I don't want to miss any status or error messages and I'm not
+# sure I captured all the places the Python upload script will or might output
+# and I don't know how motion calls the on_movie_end script (can I use args?).
+# And that was a really long run-on sentence.
+
+set -o errexit
+set -o nounset
+set -o pipefail
+
+DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+
+cd "$DIR/../Chicken/lib"
+
+python -ttu youtube-upload.py --file "$1" 2>&1 | logger -t youtube-upload

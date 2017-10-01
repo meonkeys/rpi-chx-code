@@ -1,0 +1,15 @@
+#!/usr/bin/python -ttu
+# -*- coding: utf-8 -*-
+
+import chxlib
+
+def get_args():
+    import argparse
+    parser = argparse.ArgumentParser(description='Open or close door. Ctrl-c aborts.')
+    parser.add_argument('cmd', type=str, choices=['open','close'])
+    return parser.parse_args()
+
+if __name__ == '__main__':
+    args = get_args()
+    chxlib.log('✋ Manual door {} request.'.format(args.cmd))
+    chxlib.door(args.cmd)
