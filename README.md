@@ -1,6 +1,6 @@
-# Raspberry Pi notes
+# Raspberry Pi Automatic Chicken Door controller software
 
-## Automatic chicken door features
+## Features
 
 * hardware interleave gravity lock mechanism
 * instant-read photoresistor poll door actuation trigger
