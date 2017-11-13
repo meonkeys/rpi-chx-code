@@ -102,7 +102,7 @@ def getDoorState():
         log('🚦 Both mag sensors tripped! Fallback says "{}".'.format(doorState), level='ERROR')
     elif not topTripped and not bottomTripped:
         doorState = readDoorStateInterleave()
-        log('🚦 Neither mag sensor tripped. Fallback says "{}".'.format(doorState), level='ERROR')
+        log('🚦 Neither mag sensor tripped. Fallback says "{}".'.format(doorState), level='DEBUG')
     elif topTripped:
         doorState = 'open'
     elif bottomTripped:
