@@ -5,8 +5,8 @@
 # 
 # m h  dom mon dow   command
 
-# auto-actuate door based on light
-*/10 * * * * /home/pi/bin/autodoor 2>&1 | logger -t autodoor
+# record light level & door position
+*/10 * * * * /home/pi/bin/status 2>&1 | logger -t status
 
 # log uploaded YouTube videos to Slack
 */5 * * * * /home/pi/bin/youtube-flush 2>&1 | logger -t youtube-flush
