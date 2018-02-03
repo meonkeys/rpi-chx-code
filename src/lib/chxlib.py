@@ -163,17 +163,19 @@ def uploadToImgur(photoAbsolutePath):
     imgurImageObject = _imgurClient.upload_from_path(photoAbsolutePath, config=config, anon=False)
     return imgurImageObject
 
+_lightLevelDawn = 10
+_lightLevelDusk = -10
 def doorOracle(lightLevel=None, doorState=None):
     rv = {}
 
     if not lightLevel: lightLevel = getLightLevel()
     if not doorState: doorState = getDoorState()
 
-    if lightLevel > 0 and doorState != 'open':
+    if lightLevel > _lightLevelDawn and doorState != 'open':
         rv['recommend'] = 'open'
         rv['message'] = '🐣 Dawn/daylight detected and door state {}. Opening door.'.format(doorState)
         rv['severity'] = 'DEBUG'
-    elif lightLevel < 0 and doorState != 'closed':
+    elif lightLevel < _lightLevelDusk and doorState != 'closed':
         rv['recommend'] = 'close'
         rv['message'] = '🌇 Dusk/nighttime detected and door state {}. Closing door.'.format(doorState)
         rv['severity'] = 'DEBUG'
