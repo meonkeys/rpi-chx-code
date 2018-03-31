@@ -60,6 +60,22 @@ Watch GPIO pin status, highlighting cumulative differences (this is an undocumen
 
 NOTE: this didn't work for checking mag (hall effect) sensors, I had to use Python code for that. See ./src/scripts/hall-effect-sensor.py . Well, it sorta worked, just not reliably. During testing I noticed the mag sensor values reading incorrect values frequently.
 
+### Other dependencies
+
+Build-time dependencies:
+
+* git v2.x
+* GNU system / POSIX
+* rsync
+* ssh
+* FIXME: complete this list (maybe containerize)
+
+Runtime dependencies:
+
+* Python v2.7.x
+* Imgur client library: `sudo pip install imgurpython`
+* FIXME: complete this list (maybe containerize)
+
 ## Forums
 
 * [Raspberry Pi 3 - Not booting the second time](https://www.raspberrypi.org/forums/viewtopic.php?p=1039582#p1039582)
