@@ -8,6 +8,7 @@ import requests
 import sys
 
 from imgurpython import ImgurClient
+from imgurpython.helpers.error import ImgurClientError
 import RPi.GPIO as GPIO
 
 baseDeployDir = os.path.join('/home', 'pi')
