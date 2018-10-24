@@ -165,7 +165,7 @@ def uploadToImgur(photoAbsolutePath):
     return imgurImageObject
 
 _lightLevelDawn = 10
-_lightLevelDusk = -10
+_lightLevelDusk = -15
 def doorOracle(lightLevel=None, doorState=None):
     rv = {}
 
