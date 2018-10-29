@@ -164,7 +164,7 @@ def uploadToImgur(photoAbsolutePath):
     imgurImageObject = _imgurClient.upload_from_path(photoAbsolutePath, config=config, anon=False)
     return imgurImageObject
 
-_lightLevelDawn = 10
+_lightLevelDawn = 5
 _lightLevelDusk = -15
 def doorOracle(lightLevel=None, doorState=None):
     rv = {}
