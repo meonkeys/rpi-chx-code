@@ -198,7 +198,7 @@ def systemctl(useSudo=True, action=None, unit=None):
 def postPhoto(photoAbsolutePath):
     try:
         imgurImageObject = uploadToImgur(photoAbsolutePath)
-    except imgurpython.helpers.error.ImgurClientError as e:
+    except ImgurClientError as e:
         log('😓 Imgur upload failed: {}'.format(e), level='DEBUG')
         return None
     imagePage = getImgurPostUrl(imgurImageObject)
