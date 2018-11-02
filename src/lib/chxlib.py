@@ -8,7 +8,7 @@ import requests
 import sys
 
 from imgurpython import ImgurClient
-from imgurpython.helpers.error import ImgurClientError
+from imgurpython.helpers.error import ImgurClientError,ImgurClientRateLimitError
 import RPi.GPIO as GPIO
 
 baseDeployDir = os.path.join('/home', 'pi')
@@ -198,7 +198,7 @@ def systemctl(useSudo=True, action=None, unit=None):
 def postPhoto(photoAbsolutePath):
     try:
         imgurImageObject = uploadToImgur(photoAbsolutePath)
-    except ImgurClientError as e:
+    except (ImgurClientError,ImgurClientRateLimitError) as e:
         log('😓 Imgur upload failed: {}'.format(e), level='DEBUG')
         return None
     imagePage = getImgurPostUrl(imgurImageObject)
