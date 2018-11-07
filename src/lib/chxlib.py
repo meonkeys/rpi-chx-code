@@ -140,7 +140,8 @@ def getImgurClient():
     # required (library handles autorefresh)
     access_token = None
     refresh_token = _secrets['imgur']['refresh_token']
-    return ImgurClient(client_id, client_secret, access_token, refresh_token)
+    mashape_key = _secrets['imgur']['mashape_key']
+    return ImgurClient(client_id, client_secret, access_token, refresh_token, mashape_key)
 
 def takePhoto():
     now = datetime.datetime.now()
