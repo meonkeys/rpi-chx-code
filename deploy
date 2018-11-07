@@ -38,11 +38,11 @@ loud "stage scripts and source to compile native programs"
 # Shared libraries and configuration files
 #######################################################################
 install -v -m 0600 "$TOP/secrets/chicken-secrets.json" build/Chicken/config
-cp -v "$TOP/src/lib/chxmotor.py" build/Chicken/lib
-cp -v "$TOP/src/lib/chxlib.py" build/Chicken/lib
-cp -v "$TOP/src/pi-crontab" build/Chicken/config
-cp -v "$TOP/src/root-crontab" build/Chicken/config
-cp -v "$TOP/src/motion.conf" build/Chicken/config
+install -v -m 0640 "$TOP/src/lib/chxmotor.py" build/Chicken/lib
+install -v -m 0640 "$TOP/src/lib/chxlib.py" build/Chicken/lib
+install -v -m 0640 "$TOP/src/pi-crontab" build/Chicken/config
+install -v -m 0640 "$TOP/src/root-crontab" build/Chicken/config
+install -v -m 0640 "$TOP/src/motion.conf" build/Chicken/config
 
 #######################################################################
 # Read light level via the photoresistor. Final program name when deployed
@@ -51,14 +51,14 @@ cp -v "$TOP/src/motion.conf" build/Chicken/config
 # zero in either direction seems to indicate the dawn/dusk transition
 # close enough to what the chickens expect.
 #######################################################################
-cp -v "$TOP/src/photoresistor/photoresistor.c" build/Chicken/src/photoresistor
-cp -v "$TOP/src/photoresistor/Makefile" build/Chicken/src/photoresistor
+install -v -m 0640 "$TOP/src/photoresistor/photoresistor.c" build/Chicken/src/photoresistor
+install -v -m 0640 "$TOP/src/photoresistor/Makefile" build/Chicken/src/photoresistor
 
 #######################################################################
 # Check light level and decide whether or not to actuate door.
 # No args. Intended to be run with cron only... see src/crontab.
 #######################################################################
-cp -v "$TOP/src/scripts/autodoor" build/Chicken/lib
+install -v -m 0750 "$TOP/src/scripts/autodoor" build/Chicken/lib
 pushd build/bin > /dev/null
 ln -s ../Chicken/lib/autodoor
 popd > /dev/null
@@ -67,7 +67,7 @@ popd > /dev/null
 # Check mag sensors and open or close door if safe to do so.
 # Run without args for usage.
 #######################################################################
-cp -v "$TOP/src/scripts/door" build/Chicken/lib
+install -v -m 0750 "$TOP/src/scripts/door" build/Chicken/lib
 pushd build/bin > /dev/null
 ln -s ../Chicken/lib/door
 popd > /dev/null
@@ -76,7 +76,7 @@ popd > /dev/null
 # Report light level and door status (open/closed/unknown).
 # No args.
 #######################################################################
-cp -v "$TOP/src/scripts/status" build/Chicken/lib
+install -v -m 0750 "$TOP/src/scripts/status" build/Chicken/lib
 pushd build/bin > /dev/null
 ln -s ../Chicken/lib/status
 popd > /dev/null
@@ -85,7 +85,7 @@ popd > /dev/null
 # Take a photo and publish to Imgur and Slack.
 # No args.
 #######################################################################
-cp -v "$TOP/src/scripts/photo" build/Chicken/lib
+install -v -m 0750 "$TOP/src/scripts/photo" build/Chicken/lib
 pushd build/bin > /dev/null
 ln -s ../Chicken/lib/photo
 popd > /dev/null
@@ -94,7 +94,7 @@ popd > /dev/null
 # Upload a photo to Imgur and log to Slack.
 # One argument: full path of image file to upload.
 #######################################################################
-cp -v "$TOP/src/scripts/imgur-upload" build/Chicken/lib
+install -v -m 0750 "$TOP/src/scripts/imgur-upload" build/Chicken/lib
 pushd build/bin > /dev/null
 ln -s ../Chicken/lib/imgur-upload
 popd > /dev/null
@@ -103,7 +103,7 @@ popd > /dev/null
 # Look for uploaded YouTube videos and post to Slack if thumbnails are ready.
 # No args.
 #######################################################################
-cp -v "$TOP/src/scripts/youtube-flush" build/Chicken/lib
+install -v -m 0750 "$TOP/src/scripts/youtube-flush" build/Chicken/lib
 pushd build/bin > /dev/null
 ln -s ../Chicken/lib/youtube-flush
 popd > /dev/null
@@ -114,8 +114,8 @@ popd > /dev/null
 #######################################################################
 install -v -m 0600 "$TOP/secrets/client_secrets.json" build/Chicken/lib
 install -v -m 0600 "$TOP/secrets/youtube-upload.py-oauth2.json" build/Chicken/lib
-cp -v "$TOP/src/lib/youtube-upload.py" build/Chicken/lib
-cp -v "$TOP/src/scripts/youtube-upload" build/bin
+install -v -m 0640 "$TOP/src/lib/youtube-upload.py" build/Chicken/lib
+install -v -m 0750 "$TOP/src/scripts/youtube-upload" build/bin
 
 loud "deploy to raspberrypi"
 
