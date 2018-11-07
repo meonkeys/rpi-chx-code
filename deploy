@@ -37,7 +37,7 @@ loud "stage scripts and source to compile native programs"
 #######################################################################
 # Shared libraries and configuration files
 #######################################################################
-cp -v "$TOP/secrets/chicken-secrets.json" build/Chicken/config
+install -v -m 0600 "$TOP/secrets/chicken-secrets.json" build/Chicken/config
 cp -v "$TOP/src/lib/chxmotor.py" build/Chicken/lib
 cp -v "$TOP/src/lib/chxlib.py" build/Chicken/lib
 cp -v "$TOP/src/pi-crontab" build/Chicken/config
@@ -112,8 +112,8 @@ popd > /dev/null
 # Upload a video to YouTube.
 # One argument: full path of video file to upload.
 #######################################################################
-cp -v "$TOP/secrets/client_secrets.json" build/Chicken/lib
-cp -v "$TOP/secrets/youtube-upload.py-oauth2.json" build/Chicken/lib
+install -v -m 0600 "$TOP/secrets/client_secrets.json" build/Chicken/lib
+install -v -m 0600 "$TOP/secrets/youtube-upload.py-oauth2.json" build/Chicken/lib
 cp -v "$TOP/src/lib/youtube-upload.py" build/Chicken/lib
 cp -v "$TOP/src/scripts/youtube-upload" build/bin
 
