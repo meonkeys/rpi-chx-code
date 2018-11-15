@@ -135,3 +135,10 @@ See <https://developers.google.com/youtube/v3/guides/uploading_a_video>.
 ### `youtube-upload.py-oauth2.json`
 
 See <https://developers.google.com/youtube/v3/guides/uploading_a_video>.
+
+# Copyleft and License
+
+* Copyright ©2018 Adam Monsen &lt;haircut@gmail.com&gt;
+* License: AGPL v3 or later (see COPYING)
+
+All upstream code uses upstream licensing. See individual source files for details.
