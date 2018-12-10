@@ -136,6 +136,31 @@ See <https://developers.google.com/youtube/v3/guides/uploading_a_video>.
 
 See <https://developers.google.com/youtube/v3/guides/uploading_a_video>.
 
+## Bugs
+
+[imgurpython](https://github.com/Imgur/imgurpython) is no longer maintained. One extant issue is with image uploading. As-is you'll get this error:
+
+    Endpoint/3/upload does not exist
+
+The fix:
+
+```diff
+--- /tmp/old.py	2018-12-09 21:14:43.057884838 -0800
++++ /usr/local/lib/python2.7/dist-packages/imgurpython/client.py	2018-12-09 21:14:01.298249141 -0800
+@@ -593,7 +593,7 @@
+         data.update({meta: config[meta] for meta in set(self.allowed_image_fields).intersection(config.keys())})
+         fd.close()
+         
+-        return self.make_request('POST', 'upload', data, anon)
++        return self.make_request('POST', 'image', data, anon)
+ 
+     def upload_from_url(self, url, config=None, anon=True):
+         if not config:
+
+```
+
+You can do this manually with something like `sudo editor /usr/local/lib/python2.7/dist-packages/imgurpython/client.py`.
+
 # Copyleft and License
 
 * Copyright ©2018 Adam Monsen &lt;haircut@gmail.com&gt;
