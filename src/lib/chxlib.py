@@ -216,7 +216,10 @@ def postPhoto(photoAbsolutePath):
     try:
         imgurImageObject = uploadToImgur(photoAbsolutePath)
     except (ImgurClientError,ImgurClientRateLimitError) as e:
-        log('😓 Imgur upload failed: {}'.format(e), level='DEBUG')
+        log('😓 Imgur upload failed: {}'.format(e), level='WARNING')
+        return None
+    if not imgurImageObject.has_key('id'):
+        log('😓 Imgur upload failed: {}'.format(imgurImageObject['message']), level='WARNING')
         return None
     imagePage = getImgurPostUrl(imgurImageObject)
     actualImage = getImgurDirectImageLink(imgurImageObject)
