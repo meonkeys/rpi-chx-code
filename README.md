@@ -87,6 +87,20 @@ Runtime dependencies:
     * Current enters a device via [anode](https://en.wikipedia.org/wiki/Anode). Mnemonic: ACID - anode current into device.
     * Current leaves a device via [cathode](https://en.wikipedia.org/wiki/Cathode). Mnemonic: CCD - cathode current departs.
 
+## Video
+
+During daylight hours when the door is open, Video is captured upon motion detection and uploaded to YouTube. There are several pieces making up this system:
+
+* [motion](https://motion-project.github.io/) is run by systemd
+    * stopped at night
+* motion triggers the upload to YouTube
+    * see the `on_movie_end` handler in `src/motion.conf`
+    * `youtube-upload` wraps `youtube-upload.py` to handle errors
+    * the YouTube ID is written to a file during upload to detect failed uploads
+* youtube-flush is scheduled in pi's crontab
+    * posts Slack notification on successful and failed video uploads
+    * YouTube ID is flushed (deleted)
+
 ## More Links
 
 * <http://adammonsen.com/talks>

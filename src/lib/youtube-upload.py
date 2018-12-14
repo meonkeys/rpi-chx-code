@@ -151,7 +151,7 @@ def resumable_upload(insert_request, options):
       if response is not None:
         if 'id' in response:
           saveId(response['id'])
-          chxlib.log('📹 Coop motion detected and video captured. Uploaded to YouTube, id {}. Local file {}'.format(response['id'], basename), level='DEBUG')
+          chxlib.log('📹 Coop motion detected and video captured. Uploading to YouTube, id {}. Local file {}'.format(response['id'], basename), level='DEBUG')
         else:
           chxlib.log('👎 The upload failed with an unexpected response: {}'.format(response), level='DEBUG')
           exit(1)

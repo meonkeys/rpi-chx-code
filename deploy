@@ -124,7 +124,7 @@ rsync -av build/ pi@raspberrypi:
 
 # allow motion to read secrets & write logs so it can run youtube-upload
 ssh pi@raspberrypi 'chown -R pi:video ~/Chicken ~/log ~/bin'
-ssh pi@raspberrypi 'chmod +s ~/log/youtube'
+ssh pi@raspberrypi 'chmod g+w ~/log/youtube'
 
 loud "compile native programs on raspberrypi"
 
