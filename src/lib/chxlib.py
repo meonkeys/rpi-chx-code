@@ -75,7 +75,11 @@ def slack(message, imageUrl=None, level=None):
         ]
     url = _secrets['slack']['chickenbotWebhookUrl']
     headers = {'content-type': 'application/json'}
-    requests.post(url, data=json.dumps(payload), headers=headers)
+    try:
+        requests.post(url, data=json.dumps(payload), headers=headers)
+    except requests.RequestException as e:
+        log('😓 Slack post failed: {}'.format(e), level='WARNING')
+        return None
 
 _lockPath = os.path.join(logDir, 'gpio.lock')
 _lockFd = None
