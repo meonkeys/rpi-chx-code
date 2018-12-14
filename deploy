@@ -37,7 +37,7 @@ loud "stage scripts and source to compile native programs"
 #######################################################################
 # Shared libraries and configuration files
 #######################################################################
-install -v -m 0600 "$TOP/secrets/chicken-secrets.json" build/Chicken/config
+install -v -m 0640 "$TOP/secrets/chicken-secrets.json" build/Chicken/config
 install -v -m 0640 "$TOP/src/lib/chxmotor.py" build/Chicken/lib
 install -v -m 0640 "$TOP/src/lib/chxlib.py" build/Chicken/lib
 install -v -m 0640 "$TOP/src/pi-crontab" build/Chicken/config
