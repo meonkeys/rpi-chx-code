@@ -161,7 +161,7 @@ def resumable_upload(insert_request, options):
       else:
         raise
     except RETRIABLE_EXCEPTIONS, e:
-      error = "🙅 A retriable error occurred uploading %s: %s" % (basenam, e)
+      error = "🙅 A retriable error occurred uploading %s: %s" % (basename, e)
 
     if error is not None:
       chxlib.log(error, level='DEBUG')
