@@ -180,6 +180,7 @@ def getDefaultVideoTitle():
     return now.strftime('ChickenCam %Y-%m-%d %H:%M:%S')
 
 if __name__ == '__main__':
+  scriptname = sys.argv[0]
   argparser.add_argument("--file", required=True, help="Video file to upload")
   argparser.add_argument("--title", help="Video title", default=getDefaultVideoTitle())
   argparser.add_argument("--description", help="Video description",
@@ -194,7 +195,7 @@ if __name__ == '__main__':
   args = argparser.parse_args()
 
   if not os.path.exists(args.file):
-    chxlib.log('☝ Please specify a valid file using the --file= parameter.', level='ERROR')
+    chxlib.log('☝ %s ERROR - Invalid filename.' % scriptname, level='ERROR')
     exit(1)
 
   youtube = get_authenticated_service(args)
@@ -202,4 +203,4 @@ if __name__ == '__main__':
     initialize_upload(youtube, args)
   except HttpError, e:
     basename = os.path.basename(args.file)
-    chxlib.log("💔 An HTTP error %d occurred uploading %s:\n%s" % (e.resp.status, basename, e.content), level='DEBUG')
+    chxlib.log("💔 %s - An HTTP error %d occurred uploading %s:\n%s" % (scriptname, e.resp.status, basename, e.content), level='DEBUG')
