@@ -113,7 +113,7 @@ popd > /dev/null
 # One argument: full path of video file to upload.
 #######################################################################
 install -v -m 0640 "$TOP/secrets/client_secrets.json" build/Chicken/lib
-install -v -m 0640 "$TOP/secrets/youtube-upload.py-oauth2.json" build/Chicken/lib
+install -v -m 0660 "$TOP/secrets/youtube-upload.py-oauth2.json" build/Chicken/lib
 install -v -m 0640 "$TOP/src/lib/youtube-upload.py" build/Chicken/lib
 install -v -m 0750 "$TOP/src/scripts/youtube-upload" build/bin
 
