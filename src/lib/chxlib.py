@@ -78,7 +78,7 @@ def slack(message, imageUrl=None, level=None):
     try:
         requests.post(url, data=json.dumps(payload), headers=headers)
     except requests.RequestException as e:
-        log('😓 Slack post failed: {}'.format(e), level='WARNING')
+        log('😓 Slack post failed: {}'.format(e), level='DEBUG')
         return None
 
 _lockPath = os.path.join(logDir, 'gpio.lock')
