@@ -38,7 +38,7 @@ _secretsPath = os.path.join(baseDeployDir, 'Chicken', 'config', 'chicken-secrets
 with open(_secretsPath) as chickenSecretsJson:
     _secrets = json.load(chickenSecretsJson)
 
-def log(message, imageUrl=None, level='INFO'):
+def log(message, imageUrl=None, level='INFO', postToSlack=True):
     '''Log a message to a file on disk and Slack.
     imageUrl will be sent to slack() if provided.
     level can be DEBUG, INFO, WARNING, or ERROR.'''
@@ -50,7 +50,8 @@ def log(message, imageUrl=None, level='INFO'):
         outputFile.write(logLine)
         if sys.stdin.isatty():
             print logLine, # for interactive usage
-    slack(message, imageUrl, level)
+    if postToSlack:
+        slack(message, imageUrl, level)
 
 def slack(message, imageUrl=None, level=None):
     if level == 'DEBUG':
@@ -78,7 +79,7 @@ def slack(message, imageUrl=None, level=None):
     try:
         requests.post(url, data=json.dumps(payload), headers=headers)
     except requests.RequestException as e:
-        log('😓 Slack post failed: {}'.format(e), level='DEBUG')
+        log('😓 Slack post failed: {}'.format(e), level='DEBUG', postToSlack=False)
         return None
 
 _lockPath = os.path.join(logDir, 'gpio.lock')
