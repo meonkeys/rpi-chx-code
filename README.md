@@ -173,7 +173,16 @@ I tried the `watchdog` package as well as this script from root's crontab:
         # ifup wlan0
     fi
 
-Neither works. Only workaround is a power cycle.
+I also disabled wifi power save by adding `wireless-power off` to the interface in `/etc/network/interfaces`. This does disable wifi power save, but still doesn't help wifi automatically reconnect.
+
+Only workaround is a power cycle.
+
+Links:
+
+* <https://www.raspberrypi.org/forums/viewtopic.php?p=537802>
+* <https://weworkweplay.com/play/rebooting-the-raspberry-pi-when-it-loses-wireless-connection-wifi/>
+* <https://superuser.com/questions/629039/disabling-power-save-option-on-wifi-device>
+* <https://askubuntu.com/questions/85214/how-can-i-prevent-iwconfig-power-management-from-being-turned-on/754128#754128>
 
 ### imgurpython
 
