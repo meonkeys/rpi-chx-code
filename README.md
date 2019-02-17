@@ -152,6 +152,31 @@ See <https://developers.google.com/youtube/v3/guides/uploading_a_video>.
 
 ## Bugs
 
+### network interruption requires power cycle
+
+My raspberry pi is connected via wifi. It still works offline, but it's best if it is on the network so it can send log messages, photos, and video clips. It usually works fine and stays online for weeks or months. If I reboot the wifi access point it is connected to, the pi is unable to reconnect and a power cycle is required.
+
+I tried the `watchdog` package as well as this script from root's crontab:
+
+    #!/bin/bash
+    
+    ping -c4 192.168.13.1 > /dev/null
+    
+    # neither ifup/ifdown nor `shutdown -r now` works
+    if [[ $? != 0 ]]
+    then
+        logger "No network connection, rebooting"
+        shutdown -r now
+        # logger "No network connection, restarting wlan0"
+        # ifdown wlan0
+        # sleep 8
+        # ifup wlan0
+    fi
+
+Neither works. Only workaround is a power cycle.
+
+### imgurpython
+
 [imgurpython](https://github.com/Imgur/imgurpython) is no longer maintained. One extant issue is with image uploading. As-is you'll get this error:
 
     Endpoint/3/upload does not exist
