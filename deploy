@@ -44,6 +44,7 @@ install -v -m 0640 "$TOP/src/pi-crontab" build/Chicken/config
 install -v -m 0640 "$TOP/src/root-crontab" build/Chicken/config
 install -v -m 0640 "$TOP/src/motion.conf" build/Chicken/config
 install -v -m 0640 "$TOP/src/autodoor-logrotate" build/Chicken/config
+install -v -m 0640 "$TOP/src/watchdog.conf" build/Chicken/config
 
 #######################################################################
 # Read light level via the photoresistor. Final program name when deployed
@@ -135,11 +136,18 @@ loud "deploy config changes"
 
 echo Update pi crontab
 ssh pi@raspberrypi 'crontab Chicken/config/pi-crontab'
+
 echo Update root crontab
 ssh pi@raspberrypi 'sudo crontab Chicken/config/root-crontab'
+
 motionConf=/etc/motion/motion.conf
 echo Update $motionConf
 ssh pi@raspberrypi "sudo cp Chicken/config/motion.conf $motionConf"
+
 logrotateConf=/etc/logrotate.d/autodoor
 echo Update $logrotateConf
 ssh pi@raspberrypi "sudo cp Chicken/config/autodoor-logrotate $logrotateConf"
+
+watchdogConf=/etc/watchdog.conf
+echo Update $watchdogConf
+ssh pi@raspberrypi "sudo cp Chicken/config/watchdog.conf $watchdogConf"
