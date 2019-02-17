@@ -1,0 +1,10 @@
+/home/pi/log/autodoor.log {
+	monthly
+	rotate 12
+	compress
+	delaycompress
+	missingok
+	notifempty
+	nocreate
+	su pi pi
+}

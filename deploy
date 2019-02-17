@@ -43,6 +43,7 @@ install -v -m 0640 "$TOP/src/lib/chxlib.py" build/Chicken/lib
 install -v -m 0640 "$TOP/src/pi-crontab" build/Chicken/config
 install -v -m 0640 "$TOP/src/root-crontab" build/Chicken/config
 install -v -m 0640 "$TOP/src/motion.conf" build/Chicken/config
+install -v -m 0640 "$TOP/src/autodoor-logrotate" build/Chicken/config
 
 #######################################################################
 # Read light level via the photoresistor. Final program name when deployed
@@ -139,3 +140,6 @@ ssh pi@raspberrypi 'sudo crontab Chicken/config/root-crontab'
 motionConf=/etc/motion/motion.conf
 echo Update $motionConf
 ssh pi@raspberrypi "sudo cp Chicken/config/motion.conf $motionConf"
+logrotateConf=/etc/logrotate.d/autodoor
+echo Update $logrotateConf
+ssh pi@raspberrypi "sudo cp Chicken/config/autodoor-logrotate $logrotateConf"
