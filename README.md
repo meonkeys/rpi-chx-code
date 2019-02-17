@@ -74,7 +74,6 @@ Runtime dependencies:
 
 * Python v2.7.x
 * Imgur client library: `sudo pip install imgurpython`
-* watchdog: `sudo apt install watchdog`
 * FIXME: complete this list (maybe containerize)
 
 ## Forums
