@@ -209,6 +209,10 @@ The fix:
 
 You can do this manually with something like `sudo editor /usr/local/lib/python2.7/dist-packages/imgurpython/client.py`.
 
+# YouTube terms
+
+Some of the code in this respository (e.g. `youtube-upload.py`) interacts with YouTube. Refer to the [YouTube Terms of Service](https://www.youtube.com/t/terms) and the [Google Privacy Policy](https://policies.google.com/privacy).
+
 # Copyleft and License
 
 * Copyright ©2018 Adam Monsen &lt;haircut@gmail.com&gt;
